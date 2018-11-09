@@ -33,21 +33,15 @@ Features:
  */
 
 #include <SPI.h>
-#include <Adafruit_NeoPixel.h>
 #include <math.h>
 
 #include "VUDisplayClass.h"
 
 #define PIN 6
 
-#define HEIGHT 8
-#define WIDTH 32
-#define N_PIXELS (HEIGHT * WIDTH)
-
 #define MIC_PIN   		A1  	// Microphone is attached to this analog pin
 #define SAMPLE_WINDOW   10  	// Sample window for average level, in milliseconds -- try 10.
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_PIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
 uint16_t peak = 0;      // Peak level of column; used for falling dots
 byte peakCycle = 0;     // Toggles between 0 and 1. To prevent peak falling too fast, it only falls when this is 0
@@ -67,10 +61,7 @@ void setup()
 	dbMax = 0.0; dbRange = 2.0;
 
 	Serial.begin(250000);
-	display.doSomething();
-
-	strip.begin();
-	strip.setBrightness(5);
+	display.setup();
 	
 	analogReference(EXTERNAL);  // for 5V Arduinos like Uno, connect the mic to the AREF pin, and leave this on.
 								// for 3.3v Arduinos like Flora, Gemma, comment this out.
@@ -107,7 +98,7 @@ void loop()
 
 	db = dbScale(signalMax, signalMin, 0.5);
 	dbMax = max(dbMax, db);
-	scaledLevel = min(WIDTH, (floor((db / dbRange * (float) WIDTH))));
+	scaledLevel = min(display.getRange(), (floor((db / dbRange * (float) display.getRange()))));
 
 	// has 1 second elapsed since we last calculated scaling factor?
 	if (millisAdjusted + 1000L < millis())
@@ -122,35 +113,9 @@ void loop()
 	else if (peak > 0 && peakCycle == 0)
 		peak--;
 
-	uint32_t offColor = strip.Color(0,0,0),
-		     peakColor = strip.Color(0,0,255);
+	display.showMeter(scaledLevel, peak);
 
-	for (uint16_t x = 0; x < WIDTH; x++)
-	{
-		uint32_t positionColor = Wheel(map(x,0,WIDTH,0,255));
-
-		if (x == peak && peak != 0)
-			positionColor = peakColor;
-		else if (x >= scaledLevel)
-			positionColor = offColor;
-		
-		for (uint16_t y = 0; y < HEIGHT; y++)
-		{
-				strip.setPixelColor(xy(x,y), positionColor);
-		}
-	}
-
-	strip.show();
 }
-
-
-uint16_t xy(uint16_t x, uint16_t y)
-{
-	x = WIDTH - 1 - x;
-	if (x & 1) y = HEIGHT - 1 - y;
-	return (x*HEIGHT + y);
-}
-
 
 /*
  *		Calculates decibels based on the peak-to-peak voltage 
@@ -166,19 +131,3 @@ float dbScale( float signalMax, float signalMin, float dbFloor )
 	return result;
 }
 
-
-// Input a value 0 to 255 to get a color value.
-// The colors are a transition r - g - b - back to r.
-uint32_t Wheel(byte WheelPos) {
-	if(WheelPos < 85) {
-		return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
-	} 
-	else if(WheelPos < 170) {
-		WheelPos -= 85;
-		return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-	} 
-	else {
-		WheelPos -= 170;
-		return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-	}
-}
