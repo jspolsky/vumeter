@@ -1,0 +1,6 @@
+{
+    "sketch": "matrixVUMeter.ino",
+    "board": "arduino:avr:uno",
+    "port": "/dev/cu.usbmodem14201",
+    "output": "../build"
+}
