@@ -35,7 +35,7 @@ Features:
 #include <SPI.h>
 #include <math.h>
 
-#include "VUDisplayClass.h"
+#include "VUDisplayClassMatrix.h"
 
 #define PIN 6
 
@@ -51,7 +51,7 @@ unsigned long millisAdjusted;   // the last time we adjusted the gain. Every sec
 float dbMax;					// max db recorded in the last second
 float dbRange;					// current range of dbs which will be scaled to (0..WIDTH)
 
-VUDisplayClass display(Serial);
+VUDisplayClassMatrix display(Serial);
 
 void setup() 
 {

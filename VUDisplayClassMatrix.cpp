@@ -1,6 +1,6 @@
-#include "VUDisplayClass.h"
+#include "VUDisplayClassMatrix.h"
 
-void VUDisplayClass::setup()
+void VUDisplayClassMatrix::setup()
 {
     
     strip = Adafruit_NeoPixel(N_PIXELS, PIN, NEO_GRB + NEO_KHZ800);
@@ -9,12 +9,12 @@ void VUDisplayClass::setup()
 
 }
 
-uint16_t VUDisplayClass::getRange()
+uint16_t VUDisplayClassMatrix::getRange()
 {
     return WIDTH;
 }
 
-void VUDisplayClass::showMeter(uint16_t level, uint16_t peak)
+void VUDisplayClassMatrix::showMeter(uint16_t level, uint16_t peak)
 {
 	uint32_t offColor = strip.Color(0,0,0),
 		     peakColor = strip.Color(0,0,255);
@@ -40,7 +40,7 @@ void VUDisplayClass::showMeter(uint16_t level, uint16_t peak)
 
 
 
-uint16_t VUDisplayClass::xy(uint16_t x, uint16_t y)
+uint16_t VUDisplayClassMatrix::xy(uint16_t x, uint16_t y)
 {
 	x = WIDTH - 1 - x;
 	if (x & 1) y = HEIGHT - 1 - y;
@@ -53,7 +53,7 @@ uint16_t VUDisplayClass::xy(uint16_t x, uint16_t y)
 
 // Input a value 0 to 255 to get a color value.
 // The colors are a transition r - g - b - back to r.
-uint32_t VUDisplayClass::Wheel(byte WheelPos) {
+uint32_t VUDisplayClassMatrix::Wheel(byte WheelPos) {
 	if(WheelPos < 85) {
 		return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 	} 

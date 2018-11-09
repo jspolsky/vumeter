@@ -7,12 +7,12 @@
 #define N_PIXELS (HEIGHT * WIDTH)
 
 
-class VUDisplayClass
+class VUDisplayClassMatrix
 {
 
     public:
-        VUDisplayClass(Stream& s) : Serial(s) {};
-        virtual ~VUDisplayClass() {};
+        VUDisplayClassMatrix(Stream& s) : Serial(s) {};
+        virtual ~VUDisplayClassMatrix() {};
 
         void setup();
         uint16_t getRange();
