@@ -2,11 +2,13 @@
 
 LED VU meter for Arduino and Adafruit NeoPixel LEDs.
 
-Originally written by Adafruit Industries.  Distributed under the BSD license.
-This paragraph must be included in any redistribution.
+Requires:
+	* 8x32 NeoPixel matrix (https://www.adafruit.com/product/2294)
+	* Arduino Uno
+	* Adafruit electret microphone (https://www.adafruit.com/product/1063)
 
-Rewritten quite a bit by Joel.
-Current version supports 8x32 NeoPixel matrix 
+Features:
+	* Automatic gain control
 
 
  Hardware requirements:
@@ -27,11 +29,6 @@ Current version supports 8x32 NeoPixel matrix
 
  See notes in setup() regarding 5V vs. 3.3V boards - there may be an
  extra connection to make and one line of code to enable or disable.
- 
- fscale function:
- Floating Point Autoscale Function V0.1
- Written by Paul Badger 2007
- Modified from code by Greg Shakar
  
  */
 
