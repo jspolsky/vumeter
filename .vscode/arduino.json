@@ -1,6 +1,6 @@
 {
     "sketch": "matrixVUMeter.ino",
-    "board": "arduino:avr:uno",
-    "port": "/dev/cu.usbmodem14201",
+    "board": "adafruit:samd:adafruit_gemma_m0",
+    "port": "/dev/cu.usbmodem14601",
     "output": "../build"
 }

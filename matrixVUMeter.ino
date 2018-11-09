@@ -32,14 +32,25 @@ Features:
  
  */
 
-#include <SPI.h>
+#include <SPI.h> 
 #include <math.h>
 
-#include "VUDisplayClassMatrix.h"
+#define HARDWARE_VEST
 
-#define PIN 6
+
+#ifdef HARDWARE_VEST
+#include "VUDisplayClassVest.h"
+#endif
+
+#ifdef MATRIX
+#include "VUDisplayClassMatrix.h"
+#endif
+
 
 #define MIC_PIN   		A1  	// Microphone is attached to this analog pin
+
+
+
 #define SAMPLE_WINDOW   10  	// Sample window for average level, in milliseconds -- try 10.
 
 
@@ -51,7 +62,14 @@ unsigned long millisAdjusted;   // the last time we adjusted the gain. Every sec
 float dbMax;					// max db recorded in the last second
 float dbRange;					// current range of dbs which will be scaled to (0..WIDTH)
 
-VUDisplayClassMatrix display(Serial);
+#ifdef MATRIX
+	VUDisplayClassMatrix 
+#endif
+#ifdef HARDWARE_VEST
+	VUDisplayClassVest
+#endif
+
+display(Serial);
 
 void setup() 
 {
@@ -63,8 +81,11 @@ void setup()
 	Serial.begin(250000);
 	display.setup();
 	
+#ifdef MATRIX
 	analogReference(EXTERNAL);  // for 5V Arduinos like Uno, connect the mic to the AREF pin, and leave this on.
 								// for 3.3v Arduinos like Flora, Gemma, comment this out.
+#endif
+
 }
 
 void loop() 
